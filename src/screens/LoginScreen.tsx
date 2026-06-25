@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Sparkles } from "lucide-react";
-import { auth } from "@/lib/data/client";
+// 🔧 MOCK: import original comentado (descomente ao remover o mock)
+// import { auth } from "@/lib/data/client";
 import { useAuth } from "@/lib/auth";
 import { FloatingBlobs } from "@/components/FloatingBlobs";
 
@@ -22,12 +23,32 @@ export default function LoginScreen() {
     e.preventDefault();
     setError("");
     setLoading(true);
+
+    // Original:
+    // try {
+    //   if (mode === "signin") {
+    //     await auth.signIn(email, password);
+    //   } else {
+    //     await auth.signUp(email, password, name);
+    //   }
+    //   await reload();
+    //   navigate("/", { replace: true });
+    // } catch (err) {
+    //   setError(err instanceof Error ? err.message : "Erro ao autenticar");
+    // } finally {
+    //   setLoading(false);
+    // }
+
+    // 🔧 MOCK: simula login via localStorage
     try {
-      if (mode === "signin") {
-        await auth.signIn(email, password);
-      } else {
-        await auth.signUp(email, password, name);
-      }
+      await new Promise((r) => setTimeout(r, 400)); // simula latência
+      const mockUser = {
+        id: "u1",
+        email: email || "admin@hub.app",
+        name: name || email.split("@")[0] || "Admin",
+      };
+      localStorage.setItem("mock_user", JSON.stringify({ user: mockUser, role: "admin" }));
+      localStorage.removeItem("mock_signed_out");
       await reload();
       navigate("/", { replace: true });
     } catch (err) {
