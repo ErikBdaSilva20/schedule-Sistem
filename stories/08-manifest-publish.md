@@ -1,6 +1,6 @@
 # Story 08 — Manifest, crédito, publish & catálogo
 
-**Status:** 📋 Backlog
+**Status:** 🔶 Parcial — local completo; etapas de infra pendentes
 **Área:** Empacotamento / Deploy
 **Contrato:** `Importantdoc.md` §B7, §B10, §B11, §Receita 9–13
 **Depende de:** 04, 05, 06, 07
@@ -52,12 +52,13 @@ O app nunca passou pelo pipeline de publish compartilhado.
 
 ## Critérios de aceite
 
-- [ ] `masi.template.json` válido (engine, envContract, screens, allow/protect, migrations).
-- [ ] `THIRD_PARTY.md` presente (ou justificativa de que nada foi copiado).
-- [ ] `pnpm templates:publish` rodado **com gateway https público**; demo no ar.
-- [ ] Migration de catálogo idempotente registrada; template aparece no Marketplace.
-- [ ] API + worker redeployados no Fly.
-- [ ] E2E: clone real provisiona, loga e usa as 6 telas.
+- [x] `masi.template.json` válido (engine, envContract, screens, allow/protect, migrations).
+- [x] `THIRD_PARTY.md` presente (scaffold interno wiki; nenhum OSS externo copiado).
+- [x] `pnpm build` passa limpo (438 kB; zero imports não usados).
+- [ ] `pnpm templates:publish` rodado **com gateway https público**; demo no ar. _(requer infra)_
+- [ ] Migration de catálogo idempotente registrada; template aparece no Marketplace. _(requer infra)_
+- [ ] API + worker redeployados no Fly. _(requer infra)_
+- [ ] E2E: clone real provisiona, loga e usa as 6 telas. _(requer infra)_
 
 ## Notas / decisões em aberto
 
