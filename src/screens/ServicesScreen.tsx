@@ -4,7 +4,7 @@ import { Plus, Pencil, Trash2, Briefcase, Clock, DollarSign } from "lucide-react
 import { AppShell } from "@/components/AppShell";
 import { PageHeader } from "@/components/PageHeader";
 import { EmptyState } from "@/components/EmptyState";
-import { Button, Field, Modal, TextArea, TextInput } from "@/components/ui-kit";
+import { Button, Field, Modal, TextArea, TextInput, ConfirmDialog, useConfirmDelete } from "@/components/ui-kit";
 import { listServices, createService, updateService, deleteService, type Service } from "@/lib/data/services.repo";
 import { useIsAdmin } from "@/lib/auth";
 
@@ -20,6 +20,7 @@ export default function ServicesScreen() {
   const createM = useMutation({ mutationFn: createService, onSuccess: inv });
   const updateM = useMutation({ mutationFn: ({ id, patch }: { id: string; patch: Parameters<typeof updateService>[1] }) => updateService(id, patch), onSuccess: inv });
   const deleteM = useMutation({ mutationFn: deleteService, onSuccess: inv });
+  const confirmDelete = useConfirmDelete();
 
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Service | null>(null);
@@ -60,7 +61,7 @@ export default function ServicesScreen() {
                 {isAdmin && (
                   <div className="flex gap-1">
                     <button onClick={() => startEdit(s)} className="grid h-8 w-8 place-items-center rounded-lg border border-border hover:bg-card-hover"><Pencil className="h-3.5 w-3.5" /></button>
-                    <button onClick={() => deleteM.mutate(s.id)} className="grid h-8 w-8 place-items-center rounded-lg border border-border text-destructive hover:bg-destructive/10"><Trash2 className="h-3.5 w-3.5" /></button>
+                    <button onClick={() => confirmDelete.ask(() => deleteM.mutate(s.id))} className="cursor-pointer grid h-8 w-8 place-items-center rounded-lg border border-border text-destructive hover:bg-destructive/10"><Trash2 className="h-3.5 w-3.5" /></button>
                   </div>
                 )}
               </div>
@@ -89,6 +90,7 @@ export default function ServicesScreen() {
           </Field>
         </div>
       </Modal>
+      <ConfirmDialog open={confirmDelete.isOpen} description="Esta ação não pode ser desfeita." onConfirm={confirmDelete.confirm} onCancel={confirmDelete.cancel} />
     </AppShell>
   );
 }

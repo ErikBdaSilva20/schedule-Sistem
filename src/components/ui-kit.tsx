@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import { X } from "lucide-react";
-import { useEffect } from "react";
+import { X, AlertTriangle } from "lucide-react";
+import { useEffect, useState, useCallback } from "react";
 
 export function Modal({
   open,
@@ -39,7 +39,7 @@ export function Modal({
             <h3 className="text-base font-semibold">{title}</h3>
             {description && <p className="mt-0.5 text-xs text-secondary">{description}</p>}
           </div>
-          <button onClick={onClose} className="grid h-8 w-8 place-items-center rounded-lg border border-border bg-card hover:bg-card-hover">
+          <button onClick={onClose} className="cursor-pointer grid h-8 w-8 place-items-center rounded-lg border border-border bg-card hover:bg-card-hover">
             <X className="h-4 w-4" />
           </button>
         </div>
@@ -54,11 +54,13 @@ export function Field({
   label,
   children,
   hint,
+  error,
   className = "",
 }: {
   label: string;
   children: ReactNode;
   hint?: string;
+  error?: string;
   className?: string;
 }) {
   return (
@@ -67,7 +69,8 @@ export function Field({
         {label}
       </div>
       {children}
-      {hint && <div className="mt-1 text-[11px] text-muted-strong">{hint}</div>}
+      {error && <div className="mt-1 text-[11px] text-destructive">{error}</div>}
+      {!error && hint && <div className="mt-1 text-[11px] text-muted-strong">{hint}</div>}
     </label>
   );
 }
@@ -87,6 +90,58 @@ export function Select(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
   return <select {...props} className={`${inputBase} ${props.className ?? ""}`} />;
 }
 
+export function ConfirmDialog({
+  open,
+  title = "Confirmar exclusão",
+  description,
+  onConfirm,
+  onCancel,
+}: {
+  open: boolean;
+  title?: string;
+  description?: string;
+  onConfirm: () => void;
+  onCancel: () => void;
+}) {
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onCancel();
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open, onCancel]);
+
+  if (!open) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onCancel} />
+      <div className="card-surface relative z-10 w-full max-w-sm bg-card-elevated p-5 shadow-2xl">
+        <div className="mb-4 flex items-start gap-3">
+          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-destructive/15">
+            <AlertTriangle className="h-5 w-5 text-destructive" />
+          </div>
+          <div>
+            <h3 className="text-base font-semibold">{title}</h3>
+            {description && <p className="mt-1 text-sm text-secondary">{description}</p>}
+          </div>
+        </div>
+        <div className="flex justify-end gap-2 border-t border-border pt-4">
+          <Button variant="outline" onClick={onCancel}>Cancelar</Button>
+          <Button variant="danger" onClick={onConfirm}>Excluir</Button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function useConfirmDelete() {
+  const [pending, setPending] = useState<(() => void) | null>(null);
+  const ask = useCallback((action: () => void) => setPending(() => action), []);
+  const confirm = useCallback(() => { pending?.(); setPending(null); }, [pending]);
+  const cancel = useCallback(() => setPending(null), []);
+  return { ask, confirm, cancel, isOpen: pending !== null };
+}
+
 export function Button({
   variant = "primary",
   className = "",
@@ -103,7 +158,7 @@ export function Button({
   return (
     <button
       {...props}
-      className={`inline-flex items-center justify-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-medium transition disabled:opacity-50 ${styles} ${className}`}
+      className={`cursor-pointer inline-flex items-center justify-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-medium transition disabled:opacity-50 disabled:cursor-not-allowed ${styles} ${className}`}
     />
   );
 }

@@ -4,7 +4,7 @@ import { Plus, Search, Pencil, Trash2, Mail, Phone, Building2, Users } from "luc
 import { AppShell } from "@/components/AppShell";
 import { PageHeader } from "@/components/PageHeader";
 import { EmptyState } from "@/components/EmptyState";
-import { Button, Field, Modal, TextArea, TextInput } from "@/components/ui-kit";
+import { Button, Field, Modal, TextArea, TextInput, ConfirmDialog, useConfirmDelete } from "@/components/ui-kit";
 import { listClients, createClient, updateClient, deleteClient, type Client } from "@/lib/data/clients.repo";
 import { listAppointments } from "@/lib/data/appointments.repo";
 import { STATUS_LABEL } from "@/lib/types";
@@ -22,6 +22,7 @@ export default function ClientsScreen() {
   const createM = useMutation({ mutationFn: createClient, onSuccess: inv });
   const updateM = useMutation({ mutationFn: ({ id, patch }: { id: string; patch: Parameters<typeof updateClient>[1] }) => updateClient(id, patch), onSuccess: inv });
   const deleteM = useMutation({ mutationFn: deleteClient, onSuccess: inv });
+  const confirmDelete = useConfirmDelete();
 
   const [q, setQ] = useState("");
   const [editing, setEditing] = useState<Client | null>(null);
@@ -76,7 +77,7 @@ export default function ClientsScreen() {
                   <div className="hidden text-sm text-secondary md:block">{count}</div>
                   <div className="flex justify-end gap-1">
                     <button onClick={() => startEdit(c)} className="grid h-8 w-8 place-items-center rounded-lg border border-border hover:bg-card-hover"><Pencil className="h-3.5 w-3.5" /></button>
-                    <button onClick={() => deleteM.mutate(c.id)} className="grid h-8 w-8 place-items-center rounded-lg border border-border text-destructive hover:bg-destructive/10"><Trash2 className="h-3.5 w-3.5" /></button>
+                    <button onClick={() => confirmDelete.ask(() => deleteM.mutate(c.id))} className="cursor-pointer grid h-8 w-8 place-items-center rounded-lg border border-border text-destructive hover:bg-destructive/10"><Trash2 className="h-3.5 w-3.5" /></button>
                   </div>
                 </li>
               );
@@ -121,6 +122,7 @@ export default function ClientsScreen() {
           </div>
         )}
       </Modal>
+      <ConfirmDialog open={confirmDelete.isOpen} description="Esta ação não pode ser desfeita." onConfirm={confirmDelete.confirm} onCancel={confirmDelete.cancel} />
     </AppShell>
   );
 }

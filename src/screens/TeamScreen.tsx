@@ -4,7 +4,7 @@ import { Plus, Pencil, Trash2, UserCog, Mail } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { PageHeader } from "@/components/PageHeader";
 import { EmptyState } from "@/components/EmptyState";
-import { Button, Field, Modal, TextInput } from "@/components/ui-kit";
+import { Button, Field, Modal, TextInput, ConfirmDialog, useConfirmDelete } from "@/components/ui-kit";
 import { listTeamMembers, createTeamMember, updateTeamMember, deleteTeamMember, type TeamMember } from "@/lib/data/team_members.repo";
 import { listAppointments } from "@/lib/data/appointments.repo";
 import { useIsAdmin } from "@/lib/auth";
@@ -21,6 +21,7 @@ export default function TeamScreen() {
   const createM = useMutation({ mutationFn: createTeamMember, onSuccess: inv });
   const updateM = useMutation({ mutationFn: ({ id, patch }: { id: string; patch: Parameters<typeof updateTeamMember>[1] }) => updateTeamMember(id, patch), onSuccess: inv });
   const deleteM = useMutation({ mutationFn: deleteTeamMember, onSuccess: inv });
+  const confirmDelete = useConfirmDelete();
 
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<TeamMember | null>(null);
@@ -55,7 +56,7 @@ export default function TeamScreen() {
                   {isAdmin && (
                     <div className="flex gap-1">
                       <button onClick={() => startEdit(m)} className="grid h-8 w-8 place-items-center rounded-lg border border-border bg-card hover:bg-card-hover"><Pencil className="h-3.5 w-3.5" /></button>
-                      <button onClick={() => deleteM.mutate(m.id)} className="grid h-8 w-8 place-items-center rounded-lg border border-border bg-card text-destructive hover:bg-destructive/10"><Trash2 className="h-3.5 w-3.5" /></button>
+                      <button onClick={() => confirmDelete.ask(() => deleteM.mutate(m.id))} className="cursor-pointer grid h-8 w-8 place-items-center rounded-lg border border-border bg-card text-destructive hover:bg-destructive/10"><Trash2 className="h-3.5 w-3.5" /></button>
                     </div>
                   )}
                 </div>
@@ -87,6 +88,7 @@ export default function TeamScreen() {
           <Field label="Status" className="col-span-2"><label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={form.active} onChange={(e) => setForm({ ...form, active: e.target.checked })} className="h-4 w-4 accent-primary" />Disponível para agendamentos</label></Field>
         </div>
       </Modal>
+      <ConfirmDialog open={confirmDelete.isOpen} description="Esta ação não pode ser desfeita." onConfirm={confirmDelete.confirm} onCancel={confirmDelete.cancel} />
     </AppShell>
   );
 }
