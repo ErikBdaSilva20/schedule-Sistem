@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import { Toaster } from "sonner";
 import { RequireAuth } from "@/components/RequireAuth";
 import DashboardScreen    from "@/screens/DashboardScreen";
 import CalendarScreen     from "@/screens/CalendarScreen";
@@ -11,6 +12,8 @@ import LoginScreen        from "@/screens/LoginScreen";
 
 export default function App() {
   return (
+    <>
+    <Toaster position="top-right" richColors closeButton />
     <Routes>
       <Route path="/login" element={<LoginScreen />} />
       <Route path="/" element={<RequireAuth><DashboardScreen /></RequireAuth>} />
@@ -21,5 +24,6 @@ export default function App() {
       <Route path="/team" element={<RequireAuth><TeamScreen /></RequireAuth>} />
       <Route path="*" element={<NotFoundScreen />} />
     </Routes>
+    </>
   );
 }

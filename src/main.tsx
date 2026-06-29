@@ -6,12 +6,6 @@ import { AuthProvider } from "./lib/auth";
 import App from "./App";
 import "./styles.css";
 
-// ============================================================
-// 🔧 MOCK: Ativa modo preview para usar dados fictícios (fixtures)
-//    em vez do gateway real. Remova/comente a linha abaixo para
-//    voltar ao comportamento original com backend.
-// ============================================================
-window.__MASI_PREVIEW__ = true;
 
 const queryClient = new QueryClient();
 
