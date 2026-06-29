@@ -202,3 +202,13 @@
     animation: none;
   }
 }
+
+@keyframes highlight-pulse {
+  0%   { background-color: rgb(6 182 212 / 0.25); box-shadow: 0 0 0 2px rgb(6 182 212 / 0.5); }
+  60%  { background-color: rgb(6 182 212 / 0.15); box-shadow: 0 0 0 2px rgb(6 182 212 / 0.3); }
+  100% { background-color: transparent; box-shadow: none; }
+}
+
+.row-highlight {
+  animation: highlight-pulse 2s ease-out forwards;
+}
