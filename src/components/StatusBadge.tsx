@@ -1,6 +1,6 @@
-import { STATUS_COLOR, STATUS_LABEL, type AppointmentStatus } from "@/lib/types";
+import { STATUS_COLOR, STATUS_LABEL } from "@/lib/types";
 
-export function StatusBadge({ status }: { status: AppointmentStatus }) {
+export function StatusBadge({ status }: { status: string }) {
   return (
     <span
       className={`inline-flex max-w-full items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[11px] font-medium ${STATUS_COLOR[status]}`}

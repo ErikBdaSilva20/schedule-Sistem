@@ -11,6 +11,7 @@ export const STATUS_LABEL: Record<string, string> = {
   completed:  "Concluído",
   cancelled:  "Cancelado",
   no_show:    "Não compareceu",
+  late:       "Atrasado",
 };
 
 export const STATUS_COLOR: Record<string, string> = {
@@ -19,4 +20,12 @@ export const STATUS_COLOR: Record<string, string> = {
   completed:  "bg-purple-accent/15 text-purple-accent border-purple-accent/30",
   cancelled:  "bg-destructive/15 text-destructive border-destructive/30",
   no_show:    "bg-warning/15 text-warning border-warning/30",
+  late:       "bg-orange-500/15 text-orange-400 border-orange-500/30",
 };
+
+/** Retorna "late" se o agendamento está no passado e ainda em aberto, preservando o status real no DB. */
+export function deriveStatus(status: string, date: string, time: string): string {
+  if (status !== "scheduled" && status !== "confirmed") return status;
+  const appt = new Date(`${date.slice(0, 10)}T${time.slice(0, 5)}`);
+  return appt < new Date() ? "late" : status;
+}
