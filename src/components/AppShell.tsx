@@ -1,25 +1,25 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import {
-  LayoutDashboard,
-  CalendarDays,
-  Users,
-  Briefcase,
-  UserCog,
-  ListChecks,
-  Sparkles,
-  Menu,
-  LogOut,
-} from "lucide-react";
-import { useEffect, useState, type ReactNode } from "react";
-import { FloatingBlobs } from "./FloatingBlobs";
-import { useAuth } from "@/lib/auth";
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
-  SheetDescription,
 } from "@/components/ui/sheet";
+import { useAuth } from "@/lib/auth";
+import {
+  Briefcase,
+  CalendarDays,
+  LayoutDashboard,
+  ListChecks,
+  LogOut,
+  Menu,
+  Sparkles,
+  UserCog,
+  Users,
+} from "lucide-react";
+import { useEffect, useState, type ReactNode } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { FloatingBlobs } from "./FloatingBlobs";
 
 const NAV: { to: string; label: string; icon: typeof LayoutDashboard; exact?: boolean }[] = [
   { to: "/", label: "Painel", icon: LayoutDashboard, exact: true },
@@ -30,13 +30,7 @@ const NAV: { to: string; label: string; icon: typeof LayoutDashboard; exact?: bo
   { to: "/team", label: "Equipe", icon: UserCog },
 ];
 
-function SidenavContent({
-  pathname,
-  onNavigate,
-}: {
-  pathname: string;
-  onNavigate?: () => void;
-}) {
+function SidenavContent({ pathname, onNavigate }: { pathname: string; onNavigate?: () => void }) {
   return (
     <div className="flex h-full flex-col">
       <div className="flex items-center gap-2.5 px-5 py-5">
@@ -152,7 +146,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             )}
             {user && (
               <span className="hidden text-xs text-secondary sm:inline truncate max-w-[120px]">
-                {user.name || user.email}
+                {user.name || "Minha conta"}
               </span>
             )}
             <button
@@ -166,6 +160,11 @@ export function AppShell({ children }: { children: ReactNode }) {
         </header>
 
         <main className="relative flex-1 px-5 py-6 md:px-8 md:py-8">{children}</main>
+
+        <footer className="border-t border-border px-5 py-3 text-center text-[11px] text-muted-strong md:px-8">
+          <span className="font-bold">© {new Date().getFullYear()} </span> MasIA. Todos os direitos
+          reservados.
+        </footer>
       </div>
     </div>
   );
