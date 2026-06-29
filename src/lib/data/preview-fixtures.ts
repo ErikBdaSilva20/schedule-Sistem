@@ -9,7 +9,7 @@ type TeamMember  = Database["public"]["Tables"]["team_members"]["Row"];
 type Appointment = Database["public"]["Tables"]["appointments"]["Row"];
 
 const now = new Date().toISOString();
-const today = new Date().toISOString().slice(0, 10);
+const today = (() => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; })();
 
 const CLIENTS: Client[] = [
   { id: "c1", owner_id: "u1", full_name: "Olivia Bennett", email: "olivia@northwind.io", phone: "+1 415 555 0142", company: "Northwind Labs", notes: "Renovação Q3.", created_at: now, updated_at: now },
