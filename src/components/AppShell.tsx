@@ -38,7 +38,7 @@ function SidenavContent({ pathname, onNavigate }: { pathname: string; onNavigate
           <Sparkles className="h-4 w-4 text-primary" />
         </div>
         <div className="min-w-0">
-          <div className="truncate text-sm font-semibold tracking-tight">AppointmentHub</div>
+          <div className="truncate text-sm font-semibold tracking-tight">Schedly</div>
           <div className="truncate text-[11px] text-muted-strong">Console de Operações</div>
         </div>
       </div>
@@ -114,7 +114,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         >
           <SheetHeader className="sr-only">
             <SheetTitle>Menu de navegação</SheetTitle>
-            <SheetDescription>Navegação principal do AppointmentHub</SheetDescription>
+            <SheetDescription>Navegação principal do Schedly</SheetDescription>
           </SheetHeader>
           <SidenavContent pathname={pathname} onNavigate={() => setMobileOpen(false)} />
         </SheetContent>

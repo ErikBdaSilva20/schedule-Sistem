@@ -1,6 +1,6 @@
 {
   "id": "appointment-hub",
-  "name": "AppointmentHub",
+  "name": "Schedly",
   "description": "Sistema de agendamento para negócios de serviços — gerencie clientes, equipe, serviços e agenda em um console unificado.",
   "version": "1.0.0",
   "engine": "vite-react-gateway",
@@ -11,20 +11,35 @@
     "roles": ["admin", "manager", "rep"]
   },
   "screens": [
-    { "id": "dashboard",     "route": "/",              "title": "Painel",         "file": "src/screens/DashboardScreen" },
-    { "id": "calendar",      "route": "/calendar",      "title": "Agenda",         "file": "src/screens/CalendarScreen" },
-    { "id": "appointments",  "route": "/appointments",  "title": "Agendamentos",   "file": "src/screens/AppointmentsScreen" },
-    { "id": "clients",       "route": "/clients",       "title": "Clientes",       "file": "src/screens/ClientsScreen" },
-    { "id": "services",      "route": "/services",      "title": "Serviços",       "file": "src/screens/ServicesScreen" },
-    { "id": "team",          "route": "/team",          "title": "Equipe",         "file": "src/screens/TeamScreen" }
+    { "id": "dashboard", "route": "/", "title": "Painel", "file": "src/screens/DashboardScreen" },
+    {
+      "id": "calendar",
+      "route": "/calendar",
+      "title": "Agenda",
+      "file": "src/screens/CalendarScreen"
+    },
+    {
+      "id": "appointments",
+      "route": "/appointments",
+      "title": "Agendamentos",
+      "file": "src/screens/AppointmentsScreen"
+    },
+    {
+      "id": "clients",
+      "route": "/clients",
+      "title": "Clientes",
+      "file": "src/screens/ClientsScreen"
+    },
+    {
+      "id": "services",
+      "route": "/services",
+      "title": "Serviços",
+      "file": "src/screens/ServicesScreen"
+    },
+    { "id": "team", "route": "/team", "title": "Equipe", "file": "src/screens/TeamScreen" }
   ],
   "editable": {
-    "allow": [
-      "src/screens/**",
-      "src/components/**",
-      "src/lib/data/*.repo.ts",
-      "src/styles.css"
-    ],
+    "allow": ["src/screens/**", "src/components/**", "src/lib/data/*.repo.ts", "src/styles.css"],
     "protect": [
       "src/lib/data/client.ts",
       "src/lib/data/types.gen.ts",

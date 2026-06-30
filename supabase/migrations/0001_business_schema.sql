@@ -1,4 +1,4 @@
--- AppointmentHub — Business Schema
+-- Schedly — Business Schema
 -- Roda no Neon do tenant DEPOIS que o gateway cria as tabelas do Better-Auth.
 -- Regras: §B4 do Importantdoc.md
 --   • owner_id text references "user"(id) em toda tabela escrita pelo rep

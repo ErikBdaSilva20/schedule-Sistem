@@ -1,10 +1,10 @@
+import { FloatingBlobs } from "@/components/FloatingBlobs";
+import { useAuth } from "@/lib/auth";
+import { auth } from "@/lib/data/client";
+import { AlertCircle, CheckCircle2, Sparkles, UserX } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Sparkles, AlertCircle, UserX, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
-import { auth } from "@/lib/data/client";
-import { useAuth } from "@/lib/auth";
-import { FloatingBlobs } from "@/components/FloatingBlobs";
 
 type Mode = "signin" | "signup";
 
@@ -36,12 +36,11 @@ export default function LoginScreen() {
   const [password, setPassword] = useState("");
 
   const [touched, setTouched] = useState({ email: false, password: false, name: false });
-  const touch = (field: keyof typeof touched) =>
-    setTouched((t) => ({ ...t, [field]: true }));
+  const touch = (field: keyof typeof touched) => setTouched((t) => ({ ...t, [field]: true }));
 
   const emailErr = !EMAIL_RE.test(email) ? "E-mail inválido" : "";
-  const passErr  = password.length > 0 && password.length < 6 ? "Mínimo de 6 caracteres" : "";
-  const nameErr  = mode === "signup" && !name.trim() ? "Nome obrigatório" : "";
+  const passErr = password.length > 0 && password.length < 6 ? "Mínimo de 6 caracteres" : "";
+  const nameErr = mode === "signup" && !name.trim() ? "Nome obrigatório" : "";
 
   type BannerType = "not_found" | "wrong_pass" | "email_taken" | "generic";
   const [banner, setBanner] = useState<{ type: BannerType; msg: string } | null>(null);
@@ -58,10 +57,7 @@ export default function LoginScreen() {
     setTouched({ email: true, password: true, name: true });
     setBanner(null);
 
-    const hasFieldError =
-      emailErr ||
-      (password.length < 6) ||
-      (mode === "signup" && !name.trim());
+    const hasFieldError = emailErr || password.length < 6 || (mode === "signup" && !name.trim());
     if (hasFieldError) return;
 
     setLoading(true);
@@ -76,7 +72,7 @@ export default function LoginScreen() {
       await reload();
       navigate("/", { replace: true });
     } catch (err) {
-      const msg    = err instanceof Error ? err.message : "";
+      const msg = err instanceof Error ? err.message : "";
       const status = parseStatus(msg);
 
       if (mode === "signin") {
@@ -109,9 +105,9 @@ export default function LoginScreen() {
 
   const passwordStrength = (() => {
     if (password.length === 0) return null;
-    if (password.length < 6)   return { label: "Fraca", color: "bg-destructive", w: "w-1/3" };
-    if (password.length < 10)  return { label: "Média", color: "bg-amber-400",   w: "w-2/3" };
-    return                            { label: "Forte", color: "bg-primary",      w: "w-full" };
+    if (password.length < 6) return { label: "Fraca", color: "bg-destructive", w: "w-1/3" };
+    if (password.length < 10) return { label: "Média", color: "bg-amber-400", w: "w-2/3" };
+    return { label: "Forte", color: "bg-primary", w: "w-full" };
   })();
 
   return (
@@ -125,7 +121,7 @@ export default function LoginScreen() {
               <Sparkles className="h-6 w-6 text-primary" />
             </div>
             <div className="text-center">
-              <h1 className="text-lg font-semibold tracking-tight">AppointmentHub</h1>
+              <h1 className="text-lg font-semibold tracking-tight">Schedly</h1>
               <p className="mt-0.5 text-[13px] text-muted-strong">
                 {mode === "signin" ? "Acesse sua conta" : "Crie sua conta"}
               </p>
@@ -195,7 +191,10 @@ export default function LoginScreen() {
               <input
                 type="email"
                 value={email}
-                onChange={(e) => { setEmail(e.target.value); setBanner(null); }}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setBanner(null);
+                }}
                 onBlur={() => touch("email")}
                 placeholder="voce@empresa.com"
                 className={`input-base ${touched.email && emailErr ? "border-destructive/60" : ""}`}
@@ -217,7 +216,9 @@ export default function LoginScreen() {
               {mode === "signup" && passwordStrength && (
                 <div className="mt-1 flex items-center gap-2">
                   <div className="h-1 flex-1 overflow-hidden rounded-full bg-border">
-                    <div className={`h-full rounded-full transition-all duration-300 ${passwordStrength.color} ${passwordStrength.w}`} />
+                    <div
+                      className={`h-full rounded-full transition-all duration-300 ${passwordStrength.color} ${passwordStrength.w}`}
+                    />
                   </div>
                   <span className="text-[11px] text-muted-strong">{passwordStrength.label}</span>
                 </div>
@@ -246,14 +247,22 @@ export default function LoginScreen() {
             {mode === "signin" ? (
               <>
                 Não tem conta?{" "}
-                <button type="button" onClick={() => switchMode("signup")} className="font-medium text-primary hover:underline">
+                <button
+                  type="button"
+                  onClick={() => switchMode("signup")}
+                  className="font-medium text-primary hover:underline"
+                >
                   Cadastre-se
                 </button>
               </>
             ) : (
               <>
                 Já tem conta?{" "}
-                <button type="button" onClick={() => switchMode("signin")} className="font-medium text-primary hover:underline">
+                <button
+                  type="button"
+                  onClick={() => switchMode("signin")}
+                  className="font-medium text-primary hover:underline"
+                >
                   Entrar
                 </button>
               </>

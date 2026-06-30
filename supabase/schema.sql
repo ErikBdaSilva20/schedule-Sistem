@@ -1,4 +1,4 @@
--- AppointmentHub — Schema completo
+-- Schedly — Schema completo
 -- Use this file to initialize a fresh database (Neon, local Postgres, etc.)
 --
 -- LOCAL DEV:
